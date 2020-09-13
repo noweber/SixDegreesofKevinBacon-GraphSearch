@@ -5,6 +5,9 @@ class Node():
         self.movie = movie
 
     def get_path(self):
+        """
+        Returns a list, where each list item is the next (movie_id, person_id) pair of the path to this node
+        """
         path = []
         current = self
         while current.parent is not None:

@@ -53,8 +53,6 @@ def load_data(directory):
 
 
 def main():
-    #TODO: should I use A*?
-
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
     directory = sys.argv[1] if len(sys.argv) == 2 else "large"
@@ -85,6 +83,7 @@ def main():
             movie = movies[path[i + 1][0]]["title"]
             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
 
+
 def shortest_path(source, target):
     """
     Returns the shortest list of (movie_id, person_id) pairs
@@ -92,6 +91,9 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    # If the source and target are the same person, then the shortest path is a path of length 0
+    if source is target:
+        return [] 
 
     # Initialize an empty explored set
     explored = set()
@@ -104,7 +106,7 @@ def shortest_path(source, target):
     # Keep looping until solution found
     while True:
 
-        # If nothing left in frontier, then no path
+        # If there is no possible path between two actors, return None.
         if frontier.empty():
             return None
 
@@ -120,11 +122,12 @@ def shortest_path(source, target):
             if not frontier.contains_person(neighbor[1]) and neighbor[1] not in explored:
                 child = Node(person=neighbor[1], parent=node, movie=neighbor[0])
 
-                # If child is the goal, then we have a solution
+                # If there are multiple paths of minimum length from the source to the target, return any of them.
                 if child.person == target:
                     return child.get_path()
 
                 frontier.add(child)
+
 
 def person_id_for_name(name):
     """
